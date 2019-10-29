@@ -1,18 +1,9 @@
 defmodule Starscream do
-  @moduledoc """
-  Documentation for Starscream.
-  """
+  use Application
 
-  @doc """
-  Hello world.
+  def start(_type, _args) do
+    children = [Plug.Adapters.Cowboy.child_spec(:http, Starscream.Router, [], port: 4000)]
 
-  ## Examples
-
-      iex> Starscream.hello()
-      :world
-
-  """
-  def hello do
-    :world
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 end
